@@ -30,7 +30,13 @@ jobs:
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" emeet-linux-*.tar.gz dist/emeet_linux-*.whl SHA256SUMS --generate-notes
+        # upload with --clobber when the release already exists, so a re-pushed tag refreshes the assets
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" emeet-linux-*.tar.gz dist/emeet_linux-*.whl SHA256SUMS --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" emeet-linux-*.tar.gz dist/emeet_linux-*.whl SHA256SUMS --generate-notes
+          fi
 
   flatpak:
     needs: release
@@ -46,7 +52,8 @@ jobs:
           sed -i "s/^version = .*/version = \"$v\"/" pyproject.toml
           sed -i "s/<release version=\"[^\"]*\" date=\"[^\"]*\"\/>/<release version=\"$v\" date=\"$(date -u +%F)\"\/>/" data/io.github.breno5g.emeet.metainfo.xml
       - name: Build Flatpak bundle
-        uses: flathub-infra/flatpak-github-actions/flatpak-builder@v6
+        # the flathub-infra repo publishes no tags, pin to a commit of master
+        uses: flathub-infra/flatpak-github-actions/flatpak-builder@933e9e8ca36e85046ebca8e211f0785c6becac40
         with:
           manifest-path: io.github.breno5g.emeet.json
           bundle: io.github.breno5g.emeet.flatpak
