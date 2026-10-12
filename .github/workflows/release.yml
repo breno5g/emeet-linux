@@ -59,8 +59,12 @@ jobs:
           bundle: io.github.breno5g.emeet.flatpak
           cache-key: flatpak-builder-${{ github.sha }}
           upload-artifact: false
+      - name: Checksum the bundle
+        run: sha256sum io.github.breno5g.emeet.flatpak > SHA256SUMS.flatpak
       - name: Attach bundle to the release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          files: io.github.breno5g.emeet.flatpak
+          files: |
+            io.github.breno5g.emeet.flatpak
+            SHA256SUMS.flatpak
