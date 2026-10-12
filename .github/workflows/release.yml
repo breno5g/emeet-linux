@@ -31,3 +31,29 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "$GITHUB_REF_NAME" emeet-linux-*.tar.gz dist/emeet_linux-*.whl SHA256SUMS --generate-notes
+
+  flatpak:
+    needs: release
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set version from tag
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          sed -i "s/^version = .*/version = \"$v\"/" pyproject.toml
+          sed -i "s/<release version=\"[^\"]*\" date=\"[^\"]*\"\/>/<release version=\"$v\" date=\"$(date -u +%F)\"\/>/" data/io.github.breno5g.emeet.metainfo.xml
+      - name: Build Flatpak bundle
+        uses: flathub-infra/flatpak-github-actions/flatpak-builder@v6
+        with:
+          manifest-path: io.github.breno5g.emeet.json
+          bundle: io.github.breno5g.emeet.flatpak
+          cache-key: flatpak-builder-${{ github.sha }}
+          upload-artifact: false
+      - name: Attach bundle to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: io.github.breno5g.emeet.flatpak

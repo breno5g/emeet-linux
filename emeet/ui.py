@@ -1,13 +1,15 @@
 """GTK4 + libadwaita window: live preview on the left, controls and presets on the right."""
 import os
 
-os.environ.setdefault("GSK_RENDERER", "gl")  # vulkan renderer crashes with gtk4paintablesink textures
-
 import gi
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, GLib, Gtk  # noqa: E402
+
+# The vulkan renderer crashes with gtk4paintablesink textures. The GL renderer was called
+# "ngl" up to GTK 4.18 and "gl" from 4.20; GTK reads this when the first window is realized.
+os.environ.setdefault("GSK_RENDERER", "gl" if Gtk.MINOR_VERSION >= 20 else "ngl")
 
 from .pipeline import default_size, pipeline_desc  # noqa: E402
 from .quirks import ZOOM_HINT, zoom_has_no_effect  # noqa: E402
@@ -329,7 +331,7 @@ class Preview:
 
 class App(Adw.Application):
     def __init__(self, camera, store, title, settings=None):
-        super().__init__(application_id="dev.breno5g.emeet")
+        super().__init__(application_id="io.github.breno5g.emeet")
         self.camera, self.store, self.title, self.settings = camera, store, title, settings
         self.win = None
         self.connect("activate", self.activate)

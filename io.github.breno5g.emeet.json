@@ -1,0 +1,43 @@
+{
+  "id": "io.github.breno5g.emeet",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "48",
+  "sdk": "org.gnome.Sdk",
+  "command": "emeet",
+  "finish-args": [
+    "--socket=wayland",
+    "--socket=fallback-x11",
+    "--share=ipc",
+    "--device=all"
+  ],
+  "cleanup": ["/include", "/lib/pkgconfig", "/share/man", "/share/doc", "*.la", "*.a"],
+  "modules": [
+    {
+      "name": "v4l-utils",
+      "buildsystem": "meson",
+      "config-opts": [
+        "-Dbpf=disabled", "-Dgconv=disabled", "-Djpeg=disabled", "-Dlibdvbv5=disabled",
+        "-Dqv4l2=disabled", "-Dqvidcap=disabled", "-Dv4l2-tracer=disabled", "-Ddoxygen-doc=disabled",
+        "-Dv4l-plugins=false", "-Dv4l-wrappers=false", "-Dv4l2-compliance-libv4l=false",
+        "-Dv4l2-ctl-libv4l=false", "-Dv4l2-ctl-stream-to=false",
+        "-Dudevdir=/app/lib/udev"
+      ],
+      "sources": [{
+        "type": "archive",
+        "url": "https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.32.0.tar.xz",
+        "sha256": "6828828a17775526eb93fb258a9294d1d1073d633c344dd71ecd4e7a1ffb7dfc"
+      }]
+    },
+    {
+      "name": "emeet",
+      "buildsystem": "simple",
+      "build-commands": [
+        "pip3 install --prefix=/app --no-deps --no-build-isolation .",
+        "install -Dm644 data/io.github.breno5g.emeet.desktop /app/share/applications/io.github.breno5g.emeet.desktop",
+        "install -Dm644 data/io.github.breno5g.emeet.svg /app/share/icons/hicolor/scalable/apps/io.github.breno5g.emeet.svg",
+        "install -Dm644 data/io.github.breno5g.emeet.metainfo.xml /app/share/metainfo/io.github.breno5g.emeet.metainfo.xml"
+      ],
+      "sources": [{"type": "dir", "path": ".", "skip": [".git", ".flatpak-builder", "build-dir", "repo", "dist"]}]
+    }
+  ]
+}

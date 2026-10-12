@@ -6,6 +6,26 @@ exposes over standard UVC controls without opening OBS.
 
 ## Install
 
+### Flatpak
+
+Download `io.github.breno5g.emeet.flatpak` from the latest release and run:
+
+```
+flatpak install ./io.github.breno5g.emeet.flatpak
+```
+
+It needs the Flathub remote for the GNOME 48 runtime. Presets and settings live
+in `~/.var/app/io.github.breno5g.emeet/config/emeet-linux/`.
+
+To build it yourself from a checkout:
+
+```
+flatpak install flathub org.gnome.Sdk//48
+flatpak run org.flatpak.Builder --user --install --force-clean build-dir io.github.breno5g.emeet.json
+```
+
+### Tarball
+
 Download `emeet-linux-vX.Y.Z.tar.gz` from the latest release, extract it and run:
 
 ```

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.breno5g.emeet</id>
+  <name>EMEET Webcam</name>
+  <summary>Control panel with live preview for UVC webcams</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer id="io.github.breno5g">
+    <name>Breno Santos</name>
+  </developer>
+  <description>
+    <p>
+      Adjust brightness, contrast, white balance, exposure, focus and zoom of a UVC
+      webcam while watching the live preview, pick the stream format, resolution and
+      frame rate, and save the result as presets. Made for the EMEET SmartCam S600,
+      works with any camera the Linux UVC driver supports.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.breno5g.emeet.desktop</launchable>
+  <url type="homepage">https://github.com/breno5g/emeet-linux</url>
+  <url type="bugtracker">https://github.com/breno5g/emeet-linux/issues</url>
+  <content_rating type="oars-1.1"/>
+  <requires>
+    <display_length compare="ge">1000</display_length>
+  </requires>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <releases>
+    <release version="0.1.0" date="2026-10-12"/>
+  </releases>
+</component>

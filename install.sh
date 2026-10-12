@@ -11,7 +11,7 @@ PIP_INSTALL="$PIP install --user --break-system-packages --force-reinstall --no-
 
 if [ "${1:-}" = "--uninstall" ]; then
     $PIP uninstall -y --break-system-packages emeet-linux || true
-    rm -f "$DATA/applications/dev.breno5g.emeet.desktop" "$DATA/icons/hicolor/scalable/apps/dev.breno5g.emeet.svg"
+    rm -f "$DATA/applications/io.github.breno5g.emeet.desktop" "$DATA/icons/hicolor/scalable/apps/io.github.breno5g.emeet.svg"
     echo "removed"
     exit 0
 fi
@@ -36,8 +36,8 @@ else
 fi
 
 # 3. menu entry and icon
-install -Dm644 data/dev.breno5g.emeet.desktop "$DATA/applications/dev.breno5g.emeet.desktop"
-install -Dm644 data/dev.breno5g.emeet.svg "$DATA/icons/hicolor/scalable/apps/dev.breno5g.emeet.svg"
+install -Dm644 data/io.github.breno5g.emeet.desktop "$DATA/applications/io.github.breno5g.emeet.desktop"
+install -Dm644 data/io.github.breno5g.emeet.svg "$DATA/icons/hicolor/scalable/apps/io.github.breno5g.emeet.svg"
 update-desktop-database "$DATA/applications" 2>/dev/null || true
 gtk-update-icon-cache -q "$DATA/icons/hicolor" 2>/dev/null || true
 
