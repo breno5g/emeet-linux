@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set version from tag
+        run: sed -i "s/^version = .*/version = \"${GITHUB_REF_NAME#v}\"/" pyproject.toml
+      - name: Build wheel
+        run: |
+          python3 -m pip install --user build
+          python3 -m build --wheel
+      - name: Assemble tarball
+        run: |
+          set -eu
+          name="emeet-linux-${GITHUB_REF_NAME}"
+          mkdir -p "out/$name"
+          cp dist/emeet_linux-*.whl install.sh README.md "out/$name/"
+          cp -r data "out/$name/data"
+          tar -C out -czf "$name.tar.gz" "$name"
+          sha256sum "$name.tar.gz" dist/emeet_linux-*.whl > SHA256SUMS
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" emeet-linux-*.tar.gz dist/emeet_linux-*.whl SHA256SUMS --generate-notes

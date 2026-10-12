@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emeet-linux"
+version = "0.1.0"
+description = "Control panel with live preview for EMEET and other UVC webcams on Linux"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+# PyGObject, GTK 4, libadwaita, GStreamer and v4l-utils come from the distro, see install.sh
+dependencies = []
+
+[project.scripts]
+emeet = "emeet.__main__:main"
+
+[tool.setuptools]
+packages = ["emeet"]

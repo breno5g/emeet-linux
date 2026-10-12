@@ -4,7 +4,20 @@ Control panel for EMEET (and any other UVC) webcams on Linux, with a live previe
 EMEET only ships eMeetLink for Windows and macOS; this covers what the camera
 exposes over standard UVC controls without opening OBS.
 
-## Run
+## Install
+
+Download `emeet-linux-vX.Y.Z.tar.gz` from the latest release, extract it and run:
+
+```
+./install.sh
+```
+
+It installs the distro packages the app needs (Arch, Debian/Ubuntu and Fedora
+are handled, others print the list), the app into your user site-packages, and a
+menu entry. Then run `emeet` or open EMEET Webcam from the app menu.
+`./install.sh --uninstall` removes it.
+
+From a checkout, the same script works, or just:
 
 ```
 python -m emeet              # auto-detects the first USB camera
@@ -12,8 +25,13 @@ python -m emeet /dev/video2  # or pick one
 ```
 
 Needs `v4l2-ctl` (v4l-utils), GTK 4, libadwaita, GStreamer with the
-`gtk4paintablesink` plugin (gst-plugin-gtk4), and PyGObject. All are in the
-Manjaro/Arch repos.
+`gtk4paintablesink` plugin (gst-plugin-gtk4), and PyGObject.
+
+## Release
+
+Push a tag like `v0.2.0`. The release workflow sets that version, builds the
+wheel, assembles the tarball and publishes a GitHub release with checksums.
+The test workflow runs the suite under Xvfb on every push and pull request.
 
 ## Test
 

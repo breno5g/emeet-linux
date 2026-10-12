@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=EMEET Webcam
+Comment=Control panel with live preview for UVC webcams
+Exec=emeet
+Icon=dev.breno5g.emeet
+Terminal=false
+Categories=AudioVideo;Video;
+Keywords=webcam;camera;uvc;emeet;v4l2;

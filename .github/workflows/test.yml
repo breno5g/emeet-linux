@@ -1,0 +1,26 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GTK 4, libadwaita, GStreamer and PyGObject
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            python3-gi gir1.2-gtk-4.0 gir1.2-adw-1 gir1.2-gstreamer-1.0 \
+            gstreamer1.0-plugins-base xvfb
+      - name: Run tests under Xvfb
+        env:
+          GSK_RENDERER: cairo
+        run: xvfb-run -a python3 -m unittest discover -s tests -v
+      - name: Build wheel
+        run: |
+          python3 -m pip install --user build
+          python3 -m build --wheel
