@@ -1,8 +1,31 @@
 # emeet-linux
 
-Control panel for EMEET (and any other UVC) webcams on Linux, with a live preview.
-EMEET only ships eMeetLink for Windows and macOS; this covers what the camera
-exposes over standard UVC controls without opening OBS.
+Control panel for EMEET webcams on Linux, with a live preview. EMEET only ships
+eMeetLink for Windows and macOS; this covers what the camera exposes over
+standard UVC controls without opening OBS.
+
+![Video tab: live preview, stream mode and the camera's controls](docs/video.png)
+
+![Presets tab: save the current values and apply them later](docs/presets.png)
+
+## Supported cameras
+
+Any EMEET webcam works: SmartCam S600, C960, C980, Nova, PIXY and the rest.
+Nothing is tied to a model. The app finds the first USB camera, asks it which
+controls and formats its firmware exposes over UVC, and builds the panel from
+that. So does any other UVC webcam (Logitech, Anker, built-in laptop cameras).
+
+What you get on every camera:
+
+- Live preview with format, resolution, frame rate and mirror.
+- Every control the firmware reports: brightness, contrast, saturation,
+  sharpness, white balance, exposure, anti-flicker, zoom, pan, tilt, and so on.
+  Which ones appear depends on the model.
+- Named presets, saved per app, and reset to the camera defaults.
+
+The only model-specific part is `emeet/quirks.py`: a table of stream modes in
+which a camera ignores zoom, measured on the SmartCam S600. Other models work
+without an entry; they just do not get the hint.
 
 ## Install
 
