@@ -26,7 +26,8 @@ jobs:
           cp dist/emeet_linux-*.whl install.sh README.md "out/$name/"
           cp -r data "out/$name/data"
           tar -C out -czf "$name.tar.gz" "$name"
-          sha256sum "$name.tar.gz" dist/emeet_linux-*.whl > SHA256SUMS
+          (cd dist && sha256sum emeet_linux-*.whl) > SHA256SUMS
+          sha256sum "$name.tar.gz" >> SHA256SUMS
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
